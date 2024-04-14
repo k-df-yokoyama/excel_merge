@@ -1,8 +1,15 @@
 import openpyxl
 
+#ToDo: エラー処理
+#ToDo: 単体テスト
+#ToDo: 仕様書
+#      seq ... Status, Completion data, ..., Comment  <- Target Row Idx/Primary Key Value
+#                                             ^- Target Col Idx/Key/Value
 
 class RiskList:
     def __init__(self):
+        self.primary_key_title = '学籍番号'
+
         self.file_name = None
         self.sheet_name = None
         self.min_row = 1
@@ -10,7 +17,6 @@ class RiskList:
         self.wb = None
         self.ws = None
         self.header_row = None #ws.iter_rows()で取得したヘッダ行(row)をそのまま保持する
-        self.primary_key_title = '学籍番号'
         self.primary_key_value_list = []
         
         self.risk_list = []  #RiskListの1行の各列をdictionaryに格納したデータのlist
@@ -99,30 +105,36 @@ if __name__ == '__main__':
     risk_list = RiskList()
     risk_list.load_from_excel_book("./school_members1.xlsx", "Sheet1", 2, 2)
 
+    print("- print_risk_list()")
     risk_list.print_risk_list()
     primary_key_value_list = risk_list.get_primary_key_value_list()
+    print("- primary_key_value_list")
     print(primary_key_value_list)
 
+    target_col_key = '名前'
     target_row_primary_key_value = "026"
     dict_of_one_risk_data = risk_list.get_dictionary_of_one_risk_data(target_row_primary_key_value)
+    print("- print risk data of " + target_row_primary_key_value)
     print("risk_data is " + str(dict_of_one_risk_data))
     if dict_of_one_risk_data is not None:
         row_idx = risk_list.get_row_index_from_primary_key_value(target_row_primary_key_value)
         print(" row_idx is " + str(row_idx))
-        print(" name is " + dict_of_one_risk_data.get('名前'))
+        print(" name is " + dict_of_one_risk_data.get(target_col_key))
 
     target_row_primary_key_value = "017"
     dict_of_one_risk_data = risk_list.get_dictionary_of_one_risk_data(target_row_primary_key_value)
+    print("- print risk data of " + target_row_primary_key_value)
     print("risk_data is " + str(dict_of_one_risk_data))
     if dict_of_one_risk_data is not None:
         row_idx = risk_list.get_row_index_from_primary_key_value(target_row_primary_key_value)
         print(" row_idx is " + str(row_idx))
-        print(" name is " + dict_of_one_risk_data.get('名前'))
+        print(" name is " + dict_of_one_risk_data.get(target_col_key))
 
     target_row_primary_key_value = "000"
     dict_of_one_risk_data = risk_list.get_dictionary_of_one_risk_data(target_row_primary_key_value)
+    print("- print risk data of " + target_row_primary_key_value)
     print("risk_data is " + str(dict_of_one_risk_data))
     if dict_of_one_risk_data is not None:
         row_idx = risk_list.get_dictionary_of_one_risk_data_row_idx(target_row_primary_key_value)
         print(" row_idx is " + str(row_idx))
-        print(" name is " + dict_of_one_risk_data.get('名前'))
+        print(" name is " + dict_of_one_risk_data.get(target_col_key))
